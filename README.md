@@ -4,7 +4,11 @@ Watermarking di massa per fotografi, accelerato dalla GPU. Stampa il tuo logo su
 intere cartelle di foto mantenendo risoluzione, profilo colore e metadati EXIF
 dell'originale, e — se vuoi — le carica su Google Drive mentre lavora.
 
-Su un MacBook Air M4 macina **circa 15 foto da 24 megapixel al secondo** (≈370 MP/s).
+Su un MacBook Air M4 macina **circa 19 foto da 24 megapixel al secondo** (≈470 MP/s).
+
+C'è un'app con anteprima dal vivo e una riga di comando, sopra lo stesso motore.
+
+![EagleFoot](docs/screenshot.png)
 
 ```
 eaglefoot apply ~/Scatti -o ~/Consegna --logo ~/logo.png --scale 15% --anchor bottom-right
@@ -150,18 +154,20 @@ Altre leve:
 
 ```
 Sources/
-  EagleFootCore/          libreria riusabile — nessuna dipendenza dalla CLI
+  EagleFootCore/          libreria riusabile — non sa niente di CLI né di GUI
     Model/                specifiche serializzabili (watermark, output, preset)
     Imaging/              pool GPU, lettura, composizione, scrittura
     Pipeline/             scoperta file ed esecuzione del batch
     Upload/               integrazione rclone
   eaglefoot/              interfaccia a riga di comando
+  EagleFootApp/           app SwiftUI
 presets/                  preset di esempio, versionabili
 samples/                  logo dimostrativo
+scripts/                  installazione, bundle .app, configurazione Drive
 ```
 
-`EagleFootCore` non sa niente della riga di comando: è la libreria su cui poggerà
-l'app SwiftUI con anteprima e posizionamento visuale.
+App e riga di comando sono due facce sottili sopra `EagleFootCore`: le impostazioni
+sono gli stessi tipi, quindi non possono divergere nel comportamento.
 
 ## Verifica
 
@@ -174,10 +180,23 @@ Non c'è un target `swift test` perché il runner di swift-testing non funziona 
 le sole Command Line Tools; `selftest` copre lo stesso terreno e gira ovunque giri
 il binario — anche dopo un aggiornamento di macOS, che è quando serve davvero.
 
+L'app sa fotografare la propria finestra, così gli screenshot della documentazione
+si rifanno senza lavoro manuale e senza il permesso "Registrazione schermo":
+
+```bash
+build/EagleFoot.app/Contents/MacOS/EagleFoot --capture /tmp/shot.png \
+    --capture-source ~/Scatti --capture-logo ~/logo.png --capture-tab Output
+```
+
+Aggiungendo `--capture-run` la lavorazione viene eseguita davvero prima dello scatto:
+è così che si verifica che il pulsante "Applica watermark" funzioni, non solo che
+sia disegnato al posto giusto.
+
 ## Stato
 
-Motore e CLI sono completi e verificati. Non ancora fatto:
+Motore, riga di comando e app sono completi e verificati. Non ancora fatto:
 
-- app SwiftUI con anteprima live e posizionamento a trascinamento
 - watermark di testo con segnaposto da EXIF (`{data}`, `{iso}`, `©{anno}`)
+- trascinamento del logo direttamente sull'anteprima per posizionarlo a mano
+- sorveglianza di una cartella dall'app (per ora è solo `eaglefoot watch`)
 - WebP in scrittura (ImageIO non lo supporta ancora su questo macOS; `doctor` lo segnala)

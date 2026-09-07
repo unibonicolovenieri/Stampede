@@ -7,6 +7,7 @@ let package = Package(
     products: [
         .library(name: "EagleFootCore", targets: ["EagleFootCore"]),
         .executable(name: "eaglefoot", targets: ["eaglefoot"]),
+        .executable(name: "EagleFootApp", targets: ["EagleFootApp"]),
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.5.0"),
@@ -22,6 +23,11 @@ let package = Package(
                 "EagleFootCore",
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
             ],
+            swiftSettings: [.swiftLanguageMode(.v5)]
+        ),
+        .executableTarget(
+            name: "EagleFootApp",
+            dependencies: ["EagleFootCore"],
             swiftSettings: [.swiftLanguageMode(.v5)]
         ),
     ]

@@ -177,6 +177,28 @@ public struct WatermarkSpec: Codable, Sendable, Equatable {
         self.shadow = shadow
     }
 
+    /// La stessa specifica adattata a un'immagine ridotta di `factor` (0.25 = un quarto).
+    ///
+    /// Le misure in frazione sono già indipendenti dalla risoluzione e restano intatte;
+    /// quelle in pixel vanno riscalate, altrimenti l'anteprima mostrerebbe un logo
+    /// enorme rispetto a quello che finirà davvero sulla foto a piena risoluzione.
+    public func scaled(by factor: Double) -> WatermarkSpec {
+        guard factor > 0, factor != 1 else { return self }
+        var copy = self
+        if copy.scale.unit == .pixels { copy.scale.value *= factor }
+        if copy.single.marginUnit == .pixels {
+            copy.single.marginX *= factor
+            copy.single.marginY *= factor
+        }
+        if var shadow = copy.shadow {
+            shadow.radius *= factor
+            shadow.offsetX *= factor
+            shadow.offsetY *= factor
+            copy.shadow = shadow
+        }
+        return copy
+    }
+
     public func validated() throws -> WatermarkSpec {
         guard !logoPath.isEmpty else {
             throw EagleFootError.invalidConfiguration("nessun logo specificato (usa --logo o un preset)")

@@ -42,7 +42,7 @@ public enum OutputFormat: String, Codable, CaseIterable, Sendable {
     }
 
     /// Formati che ignorano il parametro qualità perché senza perdita.
-    var isLossless: Bool { self == .png || self == .tiff }
+    public var isLossless: Bool { self == .png || self == .tiff }
 
     /// I formati a 16 bit per canale che sappiamo scrivere.
     var supportsDeepColor: Bool { self == .png || self == .tiff }

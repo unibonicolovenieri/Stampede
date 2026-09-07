@@ -40,3 +40,5 @@ esac
 
 echo
 echo "Il link punta alla build nel repo: dopo un 'git pull' basta 'swift build -c release'."
+echo
+echo "Per l'app con interfaccia grafica:  ./scripts/build-app.sh"

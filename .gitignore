@@ -7,3 +7,4 @@ DerivedData/
 out/
 samples/out/
 *.log
+build/
