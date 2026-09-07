@@ -1,0 +1,39 @@
+{
+  "description": "Master d'archivio: risoluzione piena, TIFF 16 bit, metadati intatti",
+  "name": "archivio-master",
+  "output": {
+    "bitDepth": 16,
+    "colorSpace": "source",
+    "filenameTemplate": "{name}{ext}",
+    "format": "tiff",
+    "overwrite": false,
+    "preserveMetadata": true,
+    "preserveTree": true,
+    "quality": 0.95,
+    "stripGPS": false
+  },
+  "watermark": {
+    "blend": "normal",
+    "layout": "single",
+    "logoPath": "../samples/logo-demo.png",
+    "opacity": 0.6,
+    "rotation": 0,
+    "scale": {
+      "reference": "width",
+      "unit": "fraction",
+      "value": 0.12
+    },
+    "single": {
+      "anchor": "bottomRight",
+      "marginUnit": "fraction",
+      "marginX": 0.02,
+      "marginY": 0.02
+    },
+    "tile": {
+      "angle": -30,
+      "spacingX": 0.6,
+      "spacingY": 0.9,
+      "stagger": true
+    }
+  }
+}

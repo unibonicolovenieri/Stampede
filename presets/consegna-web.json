@@ -1,0 +1,50 @@
+{
+  "description": "Consegna clienti: lato lungo 2048 px, logo discreto in basso a destra",
+  "name": "consegna-web",
+  "output": {
+    "bitDepth": 8,
+    "colorSpace": "source",
+    "filenameTemplate": "{name}-web{ext}",
+    "format": "jpeg",
+    "overwrite": false,
+    "preserveMetadata": true,
+    "preserveTree": true,
+    "quality": 0.92,
+    "resize": {
+      "allowUpscale": false,
+      "mode": "longest",
+      "value": 2048
+    },
+    "stripGPS": false
+  },
+  "watermark": {
+    "blend": "normal",
+    "layout": "single",
+    "logoPath": "../samples/logo-demo.png",
+    "opacity": 0.75,
+    "rotation": 0,
+    "scale": {
+      "reference": "width",
+      "unit": "fraction",
+      "value": 0.16
+    },
+    "shadow": {
+      "offsetX": 0,
+      "offsetY": -3,
+      "opacity": 0.45,
+      "radius": 6
+    },
+    "single": {
+      "anchor": "bottomRight",
+      "marginUnit": "fraction",
+      "marginX": 0.03,
+      "marginY": 0.03
+    },
+    "tile": {
+      "angle": -30,
+      "spacingX": 0.6,
+      "spacingY": 0.9,
+      "stagger": true
+    }
+  }
+}

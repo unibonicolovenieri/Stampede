@@ -1,0 +1,44 @@
+{
+  "description": "Bozze protette: mosaico diagonale su tutta la foto",
+  "name": "antifurto",
+  "output": {
+    "bitDepth": 8,
+    "colorSpace": "source",
+    "filenameTemplate": "{name}-bozza{ext}",
+    "format": "jpeg",
+    "overwrite": false,
+    "preserveMetadata": true,
+    "preserveTree": true,
+    "quality": 0.85,
+    "resize": {
+      "allowUpscale": false,
+      "mode": "longest",
+      "value": 1600
+    },
+    "stripGPS": false
+  },
+  "watermark": {
+    "blend": "normal",
+    "layout": "tile",
+    "logoPath": "../samples/logo-demo.png",
+    "opacity": 0.25,
+    "rotation": 0,
+    "scale": {
+      "reference": "width",
+      "unit": "fraction",
+      "value": 0.13
+    },
+    "single": {
+      "anchor": "bottomRight",
+      "marginUnit": "fraction",
+      "marginX": 0.03,
+      "marginY": 0.03
+    },
+    "tile": {
+      "angle": -30,
+      "spacingX": 0.8,
+      "spacingY": 0.8,
+      "stagger": true
+    }
+  }
+}
