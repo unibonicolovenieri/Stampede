@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Compila EagleFoot in modalità release e lo rende richiamabile da qualunque cartella.
+# Compila Stampede in modalità release e lo rende richiamabile da qualunque cartella.
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
@@ -13,20 +13,20 @@ fi
 echo "Compilo (la prima volta scarica swift-argument-parser)…"
 swift build -c release
 
-BINARY="$ROOT/.build/release/eaglefoot"
+BINARY="$ROOT/.build/release/stampede"
 [ -x "$BINARY" ] || { echo "Compilazione fallita: binario non trovato." >&2; exit 1; }
 
 # Preferiamo ~/.local/bin: non richiede sudo e sopravvive agli aggiornamenti di sistema.
 TARGET_DIR="$HOME/.local/bin"
 mkdir -p "$TARGET_DIR"
-ln -sf "$BINARY" "$TARGET_DIR/eaglefoot"
+ln -sf "$BINARY" "$TARGET_DIR/stampede"
 
 echo
-echo "Installato: $TARGET_DIR/eaglefoot -> $BINARY"
+echo "Installato: $TARGET_DIR/stampede -> $BINARY"
 
 case ":$PATH:" in
     *":$TARGET_DIR:"*)
-        echo "Pronto. Prova:  eaglefoot doctor"
+        echo "Pronto. Prova:  stampede doctor"
         ;;
     *)
         SHELL_RC="$HOME/.zshrc"
@@ -34,7 +34,7 @@ case ":$PATH:" in
         echo "$TARGET_DIR non è nel PATH. Aggiungilo con:"
         echo "  echo 'export PATH=\"\$HOME/.local/bin:\$PATH\"' >> $SHELL_RC && source $SHELL_RC"
         echo
-        echo "Nel frattempo puoi usare il percorso completo:  $TARGET_DIR/eaglefoot doctor"
+        echo "Nel frattempo puoi usare il percorso completo:  $TARGET_DIR/stampede doctor"
         ;;
 esac
 

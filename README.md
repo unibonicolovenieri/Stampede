@@ -1,4 +1,6 @@
-# EagleFoot
+<img src="docs/icon.png" width="96" align="right" alt="">
+
+# Stampede
 
 Watermarking di massa per fotografi, accelerato dalla GPU. Stampa il tuo logo su
 intere cartelle di foto mantenendo risoluzione, profilo colore e metadati EXIF
@@ -8,15 +10,18 @@ Su un MacBook Air M4 macina **circa 19 foto da 24 megapixel al secondo** (≈470
 
 C'è un'app con anteprima dal vivo e una riga di comando, sopra lo stesso motore.
 
-![EagleFoot](docs/screenshot.png)
+![Stampede](docs/screenshot.png)
 
 ```
-eaglefoot apply ~/Scatti -o ~/Consegna --logo ~/logo.png --scale 15% --anchor bottom-right
+stampede apply ~/Scatti -o ~/Consegna --logo ~/logo.png --scale 15% --anchor bottom-right
 ```
+
+Il nome viene da *stamp* — timbrare — e da quello che succede quando gli mandi
+ottocento foto insieme.
 
 ## Perché esiste
 
-uMark e simili lavorano una foto alla volta sulla CPU. EagleFoot tiene in volo più
+uMark e simili lavorano una foto alla volta sulla CPU. Stampede tiene in volo più
 immagini insieme e appoggia la composizione su Core Image, che gira su Metal: mentre
 la GPU fonde il logo di una foto, la CPU sta già decodificando la successiva e
 codificando la precedente. Nessuna delle due unità resta ad aspettare l'altra.
@@ -24,11 +29,11 @@ codificando la precedente. Nessuna delle due unità resta ad aspettare l'altra.
 ## Installazione
 
 ```bash
-git clone https://github.com/unibonicolovenieri/EagleFoot.git EagleFoot
-cd EagleFoot
-./scripts/install.sh          # compila e mette `eaglefoot` nel PATH
-eaglefoot doctor              # verifica GPU, formati e configurazione
-eaglefoot selftest            # 76 controlli sul motore di rendering
+git clone https://github.com/unibonicolovenieri/Stampede.git Stampede
+cd Stampede
+./scripts/install.sh          # compila e mette `stampede` nel PATH
+stampede doctor              # verifica GPU, formati e configurazione
+stampede selftest            # 76 controlli sul motore di rendering
 ```
 
 Serve macOS 14 o successivo e le Command Line Tools di Xcode (`xcode-select --install`).
@@ -39,7 +44,7 @@ Per l'upload su Drive serve anche `rclone` (`brew install rclone`).
 ### Una cartella, un logo
 
 ```bash
-eaglefoot apply ~/Scatti -o ~/Consegna \
+stampede apply ~/Scatti -o ~/Consegna \
   --logo ~/logo.png \
   --scale 15% --anchor bottom-right --margin 3% --opacity 0.8 --shadow
 ```
@@ -49,7 +54,7 @@ eaglefoot apply ~/Scatti -o ~/Consegna \
 ### Mosaico anti-furto per le bozze
 
 ```bash
-eaglefoot apply ~/Selezione -o ~/Bozze \
+stampede apply ~/Selezione -o ~/Bozze \
   --logo ~/logo.png --layout tile \
   --scale 13% --opacity 0.25 --tile-angle -30 --tile-spacing 0.8 \
   --resize-longest 1600
@@ -61,7 +66,7 @@ post rispetto a un watermark singolo o a una griglia allineata.
 ### Flusso continuo
 
 ```bash
-eaglefoot watch ~/Ingest -o ~/Consegna --preset consegna-web --drive gdrive:Consegne/2026
+stampede watch ~/Ingest -o ~/Consegna --preset consegna-web --drive gdrive:Consegne/2026
 ```
 
 Scarichi la scheda dentro `~/Ingest` e le foto escono già firmate e già su Drive.
@@ -72,17 +77,17 @@ secondo e mezzo, così non si lavora mai un JPEG copiato a metà.
 
 ```bash
 # salva le impostazioni correnti
-eaglefoot apply ... --save-preset matrimoni
+stampede apply ... --save-preset matrimoni
 
 # oppure creane uno senza lavorare niente
-eaglefoot preset save social --logo ~/logo.png --scale 20% --resize-longest 2048
+stampede preset save social --logo ~/logo.png --scale 20% --resize-longest 2048
 
-eaglefoot preset list
-eaglefoot preset show matrimoni      # è normale JSON, modificabile a mano
+stampede preset list
+stampede preset show matrimoni      # è normale JSON, modificabile a mano
 ```
 
 I preset si cercano prima in `./presets` (versionabili nel repo, insieme al logo),
-poi in `~/.config/eaglefoot/presets`. In `./presets` ne trovi tre già pronti:
+poi in `~/.config/stampede/presets`. In `./presets` ne trovi tre già pronti:
 `consegna-web`, `antifurto`, `archivio-master`.
 
 Le opzioni passate a riga di comando hanno sempre la precedenza sul preset, quindi
@@ -100,7 +105,7 @@ e upload ripresi molto meglio di quanto potrebbe fare questo programma.
 Poi:
 
 ```bash
-eaglefoot apply ~/Scatti -o ~/Consegna --preset consegna-web \
+stampede apply ~/Scatti -o ~/Consegna --preset consegna-web \
   --drive gdrive:Consegne/2026-09/Rossi
 ```
 
@@ -132,7 +137,7 @@ file da 60 megapixel.
 ## Prestazioni
 
 ```bash
-eaglefoot doctor --bench --bench-count 24 --bench-megapixels 24
+stampede doctor --bench --bench-count 24 --bench-megapixels 24
 ```
 
 La concorrenza di default è calcolata su core **e memoria**: una foto da 45 MP occupa
@@ -154,24 +159,24 @@ Altre leve:
 
 ```
 Sources/
-  EagleFootCore/          libreria riusabile — non sa niente di CLI né di GUI
+  StampedeCore/          libreria riusabile — non sa niente di CLI né di GUI
     Model/                specifiche serializzabili (watermark, output, preset)
     Imaging/              pool GPU, lettura, composizione, scrittura
     Pipeline/             scoperta file ed esecuzione del batch
     Upload/               integrazione rclone
-  eaglefoot/              interfaccia a riga di comando
-  EagleFootApp/           app SwiftUI
+  stampede/              interfaccia a riga di comando
+  StampedeApp/           app SwiftUI
 presets/                  preset di esempio, versionabili
 samples/                  logo dimostrativo
 scripts/                  installazione, bundle .app, configurazione Drive
 ```
 
-App e riga di comando sono due facce sottili sopra `EagleFootCore`: le impostazioni
+App e riga di comando sono due facce sottili sopra `StampedeCore`: le impostazioni
 sono gli stessi tipi, quindi non possono divergere nel comportamento.
 
 ## Verifica
 
-`eaglefoot selftest` esegue 76 controlli sul motore: matematica dell'opacità,
+`stampede selftest` esegue 76 controlli sul motore: matematica dell'opacità,
 posizionamento delle nove ancore, geometria del mosaico, ridimensionamento,
 template dei nomi, percorsi remoti, e una prova completa su file veri che
 ricontrolla dimensioni, EXIF e orientamento dell'output.
@@ -184,7 +189,7 @@ L'app sa fotografare la propria finestra, così gli screenshot della documentazi
 si rifanno senza lavoro manuale e senza il permesso "Registrazione schermo":
 
 ```bash
-build/EagleFoot.app/Contents/MacOS/EagleFoot --capture /tmp/shot.png \
+build/Stampede.app/Contents/MacOS/Stampede --capture /tmp/shot.png \
     --capture-source ~/Scatti --capture-logo ~/logo.png --capture-tab Output
 ```
 
@@ -198,5 +203,5 @@ Motore, riga di comando e app sono completi e verificati. Non ancora fatto:
 
 - watermark di testo con segnaposto da EXIF (`{data}`, `{iso}`, `©{anno}`)
 - trascinamento del logo direttamente sull'anteprima per posizionarlo a mano
-- sorveglianza di una cartella dall'app (per ora è solo `eaglefoot watch`)
+- sorveglianza di una cartella dall'app (per ora è solo `stampede watch`)
 - WebP in scrittura (ImageIO non lo supporta ancora su questo macOS; `doctor` lo segnala)

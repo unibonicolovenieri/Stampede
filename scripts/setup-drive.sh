@@ -55,9 +55,9 @@ Prova che funzioni (sostituisci `gdrive` con il nome che hai scelto):
 
   rclone lsd gdrive:
 
-Poi passalo a EagleFoot:
+Poi passalo a Stampede:
 
-  eaglefoot apply ~/Scatti -o ~/Consegna --logo ~/logo.png \
+  stampede apply ~/Scatti -o ~/Consegna --logo ~/logo.png \
       --drive gdrive:Consegne/2026-09/Rossi
 
 Suggerimento: crea in anticipo su Drive la cartella di destinazione se vuoi
