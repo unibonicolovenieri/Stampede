@@ -113,8 +113,8 @@ public final class RcloneUploader: @unchecked Sendable {
                 Log.error("upload fallito \(file.lastPathComponent): \(result.stderr.trimmingCharacters(in: .whitespacesAndNewlines))")
                 return
             }
-            let size = (try? FileManager.default.attributesOfItem(atPath: file.path)[.size] as? Int) ?? 0
-            record(success: true, bytes: size ?? 0)
+            let size = ((try? FileManager.default.attributesOfItem(atPath: file.path))?[.size] as? Int) ?? 0
+            record(success: true, bytes: size)
             Log.debug("caricato \(destination)")
         } catch {
             record(success: false, bytes: 0)

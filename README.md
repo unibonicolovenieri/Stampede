@@ -20,7 +20,7 @@ codificando la precedente. Nessuna delle due unità resta ad aspettare l'altra.
 ## Installazione
 
 ```bash
-git clone <questo-repo> EagleFoot
+git clone https://github.com/unibonicolovenieri/EagleFoot.git EagleFoot
 cd EagleFoot
 ./scripts/install.sh          # compila e mette `eaglefoot` nel PATH
 eaglefoot doctor              # verifica GPU, formati e configurazione
