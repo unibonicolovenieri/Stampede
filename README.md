@@ -29,17 +29,46 @@ codificando la precedente. Nessuna delle due unità resta ad aspettare l'altra.
 ## Installazione
 
 ```bash
-git clone https://github.com/unibonicolovenieri/Stampede.git Stampede
+git clone https://github.com/unibonicolovenieri/Stampede.git
 cd Stampede
-./scripts/install.sh          # compila e mette `stampede` nel PATH
-stampede doctor              # verifica GPU, formati e configurazione
-stampede selftest            # 76 controlli sul motore di rendering
+
+./scripts/build-app.sh        # crea build/Stampede.app
+cp -R build/Stampede.app /Applications/
+
+./scripts/install.sh          # mette anche `stampede` nel PATH
+stampede doctor               # verifica GPU, formati e configurazione
+stampede selftest             # 76 controlli sul motore di rendering
 ```
 
 Serve macOS 14 o successivo e le Command Line Tools di Xcode (`xcode-select --install`).
-Per l'upload su Drive serve anche `rclone` (`brew install rclone`).
+Xcode completo non serve. Per l'upload su Drive serve anche `rclone`
+(`brew install rclone`).
 
-## Uso
+Se sposti o rinomini la cartella del progetto, rilancia semplicemente uno dei due
+script: si accorgono da soli che i percorsi sono cambiati e svuotano la cache di
+compilazione. `.build` contiene percorsi assoluti, e senza quella pulizia Swift
+fallisce lamentando un modulo `SwiftShims` mancante — un messaggio che non lascia
+capire che basta cancellare una cartella.
+
+## L'app
+
+Trascini la cartella delle foto, scegli logo e posizione, e vedi subito il risultato:
+l'anteprima usa lo stesso renderer del batch, quindi non è un'approssimazione ma
+esattamente il file che verrà scritto.
+
+- **Watermark** — logo, singolo o mosaico, le nove posizioni, dimensione, margini,
+  opacità, rotazione, fusione, ombra
+- **Output** — formato, qualità, 8/16 bit, profilo colore, ridimensionamento,
+  nome dei file, metadati
+- **Avanzate** — Google Drive, precisione del motore, foto in parallelo
+
+Il pulsante **Comando** nella barra strumenti mostra la riga di terminale equivalente
+alle impostazioni correnti, pronta da incollare in uno script.
+
+I preset sono gli stessi file JSON per app e terminale: quello che salvi qui lo usi
+con `stampede apply --preset nome`, e viceversa.
+
+## Uso da terminale
 
 ### Una cartella, un logo
 
