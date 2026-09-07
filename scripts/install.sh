@@ -10,6 +10,10 @@ if ! xcode-select -p >/dev/null 2>&1; then
     exit 1
 fi
 
+# shellcheck source=prepare-build.sh
+source "$ROOT/scripts/prepare-build.sh"
+prepare_build "$ROOT"
+
 echo "Compilo (la prima volta scarica swift-argument-parser)…"
 swift build -c release
 

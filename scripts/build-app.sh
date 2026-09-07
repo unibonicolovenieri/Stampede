@@ -7,6 +7,10 @@ ROOT="$(pwd)"
 APP="$ROOT/build/Stampede.app"
 VERSION="0.2.0"
 
+# shellcheck source=prepare-build.sh
+source "$ROOT/scripts/prepare-build.sh"
+prepare_build "$ROOT"
+
 echo "Compilo la GUI…"
 swift build -c release --product StampedeApp
 
